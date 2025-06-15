@@ -1,0 +1,10 @@
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*~
+
+# Arquivos de backup de editores
+*.swp
+*.swo
