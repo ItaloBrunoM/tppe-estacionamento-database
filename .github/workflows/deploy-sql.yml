@@ -1,8 +1,8 @@
-name: Deploy PostgreSQL Script
+name: Deploy PostgreSQL Scripts
 
 on:
   push:
-    branches: [main]  # ou outra branch que você usa
+    branches: [main]
 
 jobs:
   deploy:
@@ -15,9 +15,12 @@ jobs:
       - name: Instalar cliente PostgreSQL
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
 
-      - name: Executar script SQL
+      - name: Executar scripts SQL em ordem
         run: |
-          echo "Executando script init.sql"
-          psql "$DATABASE_URL" -f ./scripts/init.sql
+          echo "Executando 01_criarTabelas.sql"
+          psql "$DATABASE_URL" -f 01_criarTabelas.sql
+
+          echo "Executando 02_inserirTabelas.sql"
+          psql "$DATABASE_URL" -f 02_inserirTabelas.sql
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
