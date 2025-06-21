@@ -1,0 +1,23 @@
+name: Deploy PostgreSQL Script
+
+on:
+  push:
+    branches: [main]  # ou outra branch que você usa
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar cliente PostgreSQL
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Executar script SQL
+        run: |
+          echo "Executando script init.sql"
+          psql "$DATABASE_URL" -f ./scripts/init.sql
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
