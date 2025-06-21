@@ -15,12 +15,11 @@ jobs:
       - name: Instalar cliente PostgreSQL
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
 
-      - name: Executar scripts SQL em ordem
+      - name: Executar todos os scripts em ordem
         run: |
-          echo "Executando 01_criarTabelas.sql"
-          psql "$DATABASE_URL" -f 01_criarTabelas.sql
-
-          echo "Executando 02_inserirTabelas.sql"
-          psql "$DATABASE_URL" -f 02_inserirTabelas.sql
+          for script in $(ls scripts/*.sql | sort); do
+            echo "Executando $script"
+            psql "$DATABASE_URL" -f "$script"
+          done
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
