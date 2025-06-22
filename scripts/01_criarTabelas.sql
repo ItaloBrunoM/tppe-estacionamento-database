@@ -3,7 +3,7 @@ CREATE TYPE user_role AS ENUM ('admin', 'funcionario');
 
 CREATE TABLE estacionamento (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
+    nome VARCHAR(255) UNIQUE NOT NULL, 
     endereco TEXT,
     total_vagas INT NOT NULL,
     valor_primeira_hora NUMERIC(10, 2),
@@ -22,7 +22,7 @@ CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     id_pessoa INT UNIQUE NOT NULL,
     login VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL, -- lembrar de armazenar a senha como um hash seguro
+    senha VARCHAR(255) NOT NULL,
     role user_role NOT NULL DEFAULT 'funcionario',
     FOREIGN KEY (id_pessoa) REFERENCES pessoa(id) ON DELETE CASCADE
 );
@@ -49,8 +49,10 @@ CREATE TABLE cliente_mensalista (
 CREATE TABLE evento (
     id SERIAL PRIMARY KEY,
     id_estacionamento INT NOT NULL,
-    nome VARCHAR(255) NOT NULL,
+    nome VARCHAR(255) UNIQUE NOT NULL,
     data_evento DATE NOT NULL,
+    hora_inicio TIME NOT NULL,
+    hora_fim TIME NOT NULL,
     valor_acesso_unico NUMERIC(10, 2),
     FOREIGN KEY (id_estacionamento) REFERENCES estacionamento(id)
 );
