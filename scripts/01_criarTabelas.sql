@@ -54,7 +54,7 @@ CREATE TABLE evento (
     hora_inicio TIME NOT NULL,
     hora_fim TIME NOT NULL,
     valor_acesso_unico NUMERIC(10, 2),
-    FOREIGN KEY (id_estacionamento) REFERENCES estacionamento(id)
+    FOREIGN KEY (id_estacionamento) REFERENCES estacionamento(id) ON DELETE CASCADE
 );
 
 CREATE TABLE acesso (
@@ -67,10 +67,11 @@ CREATE TABLE acesso (
     valor_pago NUMERIC(10, 2),
     id_acesso_evento INT,
     id_acesso_mensalista INT,
-    FOREIGN KEY (id_estacionamento) REFERENCES estacionamento(id),
-    FOREIGN KEY (id_veiculo) REFERENCES veiculo(id),
-    FOREIGN KEY (id_acesso_evento) REFERENCES evento(id),
-    FOREIGN KEY (id_acesso_mensalista) REFERENCES cliente_mensalista(id)
+    -- ATUALIZAÇÃO AQUI:
+    FOREIGN KEY (id_estacionamento) REFERENCES estacionamento(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_veiculo) REFERENCES veiculo(id) ON DELETE CASCADE, 
+    FOREIGN KEY (id_acesso_evento) REFERENCES evento(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_acesso_mensalista) REFERENCES cliente_mensalista(id) ON DELETE CASCADE
 );
 
 CREATE TABLE faturamento (
