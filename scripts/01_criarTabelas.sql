@@ -50,24 +50,25 @@ CREATE TABLE cliente_mensalista (
     FOREIGN KEY (id_veiculo) REFERENCES veiculo(id) ON DELETE CASCADE
 );
 
+-- Tabela 'evento' ATUALIZADA
 CREATE TABLE evento (
     id SERIAL PRIMARY KEY,
     id_estacionamento INT NOT NULL,
     nome VARCHAR(255) UNIQUE NOT NULL,
-    data_evento DATE NOT NULL,
-    hora_inicio TIME NOT NULL,
-    hora_fim TIME NOT NULL,
+    data_hora_inicio TIMESTAMP NOT NULL, -- COLUNA ATUALIZADA (removido WITH TIME ZONE para salvar local)
+    data_hora_fim TIMESTAMP NOT NULL,     -- COLUNA ATUALIZADA (removido WITH TIME ZONE para salvar local)
     valor_acesso_unico NUMERIC(10, 2),
     admin_id INT, 
     FOREIGN KEY (id_estacionamento) REFERENCES estacionamento(id) ON DELETE CASCADE,
     FOREIGN KEY (admin_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
+-- Tabela 'acesso' ATUALIZADA
 CREATE TABLE acesso (
     id SERIAL PRIMARY KEY,
     placa VARCHAR(10) NOT NULL,
-    hora_entrada TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    hora_saida TIMESTAMP WITH TIME ZONE,
+    hora_entrada TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- ALTERADO: Removido 'WITH TIME ZONE'
+    hora_saida TIMESTAMP,                                     -- ALTERADO: Removido 'WITH TIME ZONE'
     valor_total NUMERIC(10, 2), 
     tipo_acesso tipo_acesso NOT NULL DEFAULT 'hora',
     id_estacionamento INT NOT NULL,
@@ -89,4 +90,4 @@ CREATE TABLE faturamento (
 
 ALTER TABLE usuarios
 ADD CONSTRAINT fk_usuario_id_pessoa
-FOREIGN KEY (id_pessoa) REFERENCES pessoa(id) ON DELETE CASCADE; 
+FOREIGN KEY (id_pessoa) REFERENCES pessoa(id) ON DELETE CASCADE;

@@ -38,3 +38,29 @@ VALUES (
     NULL
 )
 ON CONFLICT (login) DO NOTHING;
+
+-- NOVO INSERT PARA ESTACIONAMENTO
+INSERT INTO estacionamento (nome, endereco, total_vagas, valor_primeira_hora, valor_demais_horas, valor_diaria, admin_id)
+VALUES (
+    'Estacionamento Principal',
+    'Rua Exemplo, 123',
+    100,
+    15.00,
+    7.50,
+    60.00,
+    (SELECT id FROM usuarios WHERE login = 'admin')
+)
+ON CONFLICT (nome) DO NOTHING;
+
+-- NOVO INSERT PARA EVENTO
+-- O evento é criado para 01 de Julho de 2025, das 14:00 às 15:00 (assumindo horário local BRT)
+INSERT INTO evento (id_estacionamento, nome, data_hora_inicio, data_hora_fim, valor_acesso_unico, admin_id)
+VALUES (
+    (SELECT id FROM estacionamento WHERE nome = 'Estacionamento Principal'),
+    'Evento de Inauguração',
+    '2025-07-01 14:00:00', 
+    '2025-07-01 15:00:00',
+    25.00,
+    (SELECT id FROM usuarios WHERE login = 'admin')
+)
+ON CONFLICT (nome) DO NOTHING;
